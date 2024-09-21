@@ -37,7 +37,9 @@ class SequenceHelper:
 class SpineSequence(Dataset):
     """SpineSequence, Custom Spine Dataset.
     """
-    data_folder = os.getenv('DATASET') if os.getenv('DATASET') else 'spine' 
+    data_folder = os.getenv('DATASET') if os.getenv('DATASET') else None
+    if data_folder is None:
+        raise ValueError("Please provide dataset name via DATASET environment variable") 
 
     def __init__(self, root_dir: str = 'data', seq_name: Optional[str] = None, 
                  vis_threshold: float = 0.0, img_transform: Namespace = None) -> None:

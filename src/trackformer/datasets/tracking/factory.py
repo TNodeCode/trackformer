@@ -42,8 +42,9 @@ for split in ['val']:
     
 custom_sequences_train = SequenceHelper.get_sequence_names(f"data/{SpineSequence.data_folder}/annotations/train.json")
 custom_sequences_val = SequenceHelper.get_sequence_names(f"data/{SpineSequence.data_folder}/annotations/val.json")
+custom_sequences_test = SequenceHelper.get_sequence_names(f"data/{SpineSequence.data_folder}/annotations/test.json")
 
-for name in custom_sequences_train + custom_sequences_val:
+for name in custom_sequences_train + custom_sequences_val + custom_sequences_test:
     DATASETS[name] = (lambda kwargs: [SpineSequence(seq_name=name, **kwargs), ])
 
 DATASETS['DEMO'] = (lambda kwargs: [DemoSequence(**kwargs), ])

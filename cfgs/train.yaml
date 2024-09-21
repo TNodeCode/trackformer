@@ -1,3 +1,4 @@
+
 lr: 0.0002
 lr_backbone_names: ['backbone.0']
 lr_backbone: 0.00002
@@ -6,14 +7,14 @@ lr_linear_proj_mult: 0.1
 lr_track: 0.0001
 overwrite_lrs: false
 overwrite_lr_scheduler: false
-batch_size: 4
+batch_size: 2
 weight_decay: 0.0001
 epochs: 50
 lr_drop: 40
 # gradient clipping max norm
 clip_max_norm: 0.1
 # Deformable DETR
-deformable: false
+deformable: true
 with_box_refine: false
 two_stage: false
 # Model parameters
@@ -30,9 +31,9 @@ position_embedding: sine
 num_feature_levels: 1
 # Transformer
 # Number of encoding layers in the transformer
-enc_layers: 2
+enc_layers: 6
 # Number of decoding layers in the transformer
-dec_layers: 2
+dec_layers: 6
 # Intermediate size of the feedforward layers in the transformer blocks
 dim_feedforward: 2048
 # Size of the embeddings (dimension of the transformer)
@@ -47,7 +48,7 @@ pre_norm: false
 dec_n_points: 4
 enc_n_points: 4
 # Tracking
-tracking: false
+tracking: true
 # In addition to detection also run tracking evaluation with default configuration from `cfgs/track.yaml`
 tracking_eval: true
 # Range of possible random previous frames
