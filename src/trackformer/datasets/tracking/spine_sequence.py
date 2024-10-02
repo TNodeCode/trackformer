@@ -50,7 +50,6 @@ class SpineSequence(Dataset):
                                    above which they are selected
         """
         super().__init__()
-        print("SPINE DATASET CONSTRUCTOR", seq_name, root_dir)
         
         self._seq_name = seq_name
         self._vis_threshold = vis_threshold
@@ -59,25 +58,31 @@ class SpineSequence(Dataset):
 
         self._train_seqs = SequenceHelper.get_sequence_names(f"{self._data_dir}/annotations/train.json")
         self._val_seqs = SequenceHelper.get_sequence_names(f"{self._data_dir}/annotations/val.json")
+        self._test_seqs = SequenceHelper.get_sequence_names(f"{self._data_dir}/annotations/test.json")
 
         self.transforms = Compose(make_coco_transforms('val', img_transform, overflow_boxes=True))
         self.data = []
         self.no_gt = True
 
-        assert (seq_name is not None) and (seq_name in self._train_seqs or self._val_seqs), \
-                'Sequence not in train nor val sequences : {}'.format(seq_name)
-        self._split = 'val' if seq_name in self._val_seqs else 'train'
+        assert (seq_name is not None) and (seq_name in self._train_seqs or self._val_seqs or self._test_seqs), \
+                'Sequence not in train, val or test sequences : {}'.format(seq_name)
+        if seq_name in self._train_seqs:
+            self._split = 'train'
+        if seq_name in self._val_seqs:
+            self._split = 'val'
+        if seq_name in self._test_seqs:
+            self._split = 'test'
+        else:
+            raise Exception(f"Sequence {seq_name} not found neither in train, val or test set")
 
         self.gt = self.load_gt()
         self.images = self.load_image_metadata()
         self.annotations = self.load_annotations()
         self.img_ids = self.load_img_ids()
-        # print(f'LEN annotations: {len(self.annotations)}')
         
         self.data = self._sequence()
 
         self.no_gt = not osp.exists(self.get_gt_file_path())
-        print("CREATED", seq_name, self._seq_name, "I", len(self.images), "A", len(self.annotations))
 
     def __len__(self) -> int:
         return len(self.data)
@@ -264,13 +269,16 @@ class SpineWrapper(Dataset):
         """
         train_sequences = SequenceHelper.get_sequence_names(f"{self._data_dir}/annotations/train.json")
         val_sequences = SequenceHelper.get_sequence_names(f"{self._data_dir}/annotations/val.json")
+        test_sequences = SequenceHelper.get_sequence_names(f"{self._data_dir}/annotations/test.json")
 
         if split == "train":
             sequences = train_sequences
         elif split == "val":
             sequences = val_sequences
+        elif split == "test":
+            sequences = test_sequences
         elif split == "all":
-            sequences = train_sequences + val_sequences
+            sequences = train_sequences + val_sequences + test_sequences
             sequences = sorted(sequences)
         else:
             raise NotImplementedError(f"Split {split} not available.")
