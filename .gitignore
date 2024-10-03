@@ -8,6 +8,8 @@
 **/__pycache__/**
 .ipynb_checkpoints/
 datasets/data/
+detections/
+dist/
 experiment-*
 *.tmp
 *.pkl
@@ -26,4 +28,6 @@ src/trackformer/models/ops/temp*
 data/
 out_sbatch/
 *.sh
+!track_custom.sh
+!train_custom.sh
 

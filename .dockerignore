@@ -8,6 +8,8 @@
 **/__pycache__/**
 .ipynb_checkpoints/
 datasets/data/
+detections/
+dist/
 experiment-*
 *.tmp
 *.pkl
@@ -28,4 +30,5 @@ data/
 models/
 out_sbatch/
 *.sh
-
+!track_spine.sh
+!train_spine.sh
